@@ -8,8 +8,17 @@ function Context({children}) {
 
     const [loading , setLoading] = useState(false)
 
+    const [username , setUsername] = useState('')
+
     const checkAuthority = () => {
-        localStorage.getItem("token") ? setAuthenticated(true) : setAuthenticated(false)
+        if(localStorage.getItem("token")){
+            setUsername(localStorage.getItem("username"))
+            setAuthenticated(true)
+         }
+         else{
+            setUsername('')
+             setAuthenticated(false)
+         }
         setLoading(true)
     }
 
@@ -19,7 +28,7 @@ function Context({children}) {
 
     return (
         loading ?
-        <ContextProvider.Provider value={{ authenticated , setAuthenticated }}>
+        <ContextProvider.Provider value={{ authenticated , setAuthenticated , username }}>
             {children}
         </ContextProvider.Provider>
         :

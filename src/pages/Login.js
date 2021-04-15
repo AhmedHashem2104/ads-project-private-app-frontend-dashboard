@@ -2,15 +2,6 @@ import React , { useContext , useState } from 'react'
 import { ContextProvider } from '../context/Context'
 import API from '../api/axios'
 import { Link , useHistory } from 'react-router-dom'
-import backgroundPhoto from '../images/background.jpg'
-import { InputAdornment, makeStyles, TextField } from '@material-ui/core';
-import { AccountCircle } from '@material-ui/icons'
-
-const useStyles = makeStyles((theme) => ({
-  margin: {
-    margin: theme.spacing(1),
-  },
-}));
 
 function Login() {
     
@@ -24,8 +15,6 @@ function Login() {
 
     let history = useHistory()
 
-    const classes = useStyles();
-
     const loginAPI = (e) => {
         e.preventDefault()
         const formData = new FormData()
@@ -33,48 +22,47 @@ function Login() {
         formData.append('password' , password)
         API.login(formData).then((res) => {
           setError({})
-            localStorage.setItem("token" , res.data.token.Token)
+            localStorage.setItem("username" , res.data.user.username)
+            localStorage.setItem("token" , res.data.token.token)
             setAuthenticated(true)
             history.push('/')
         }).catch(err => {
-            setError(err.response.data[0] || err.response.data)
+            setError(err.response.data.errors[0] || err.response.data)
         })
     }
     return (
         !authenticated ?
-        <div style={{ width : '100%' , height : '100vh' , display : 'flex' , justifyContent : 'center' , alignItems: 'center' , backgroundImage : `url(${backgroundPhoto})` , backgroundRepeat : 'no-repeat' , backgroundSize : '100% 100%' }}>
-      <form onSubmit={loginAPI} style={{ backgroundColor : 'white' , padding : 20 , borderRadius : 10 , width : '25%' }}>
-        <p className="h5 text-center mb-4" style={{ color : 'black' , fontSize : 25 }}>Sign in</p>
-        <div className="white-text">
-        <TextField
-        className={classes.margin}
-        id="input-with-icon-textfield"
-        label="TextField"
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <AccountCircle />
-            </InputAdornment>
-          ),
-        }}
-      />
-      <TextField
-        className={classes.margin}
-        id="input-with-icon-textfield"
-        label="TextField"
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <AccountCircle />
-            </InputAdornment>
-          ),
-        }}
-      />
+        <section className="position-relative pb-0">
+        <div className="gen-login-page-background" style={{ backgroundImage : `url('/images/background/background.jpg')` }}></div>
+        <div className="container">
+            <div className="row">
+                <div className="col-lg-12">
+                    <div className="text-center">
+                        <form name="pms_login" id="pms_login" method="post" onSubmit={(e) => loginAPI(e)}>
+                            <h4>Sign In</h4>
+                            <p className="login-username">
+                                <label htmlFor="user_login">Email Address</label>
+                                <input type="email" name="email" id="user_login" className="input" value={email} onChange={(e) => setEmail(e.target.value)}  />
+                            </p>
+                            <p className="login-password">
+                                <label htmlFor="user_pass">Password</label>
+                                <input type="password" name="password" id="user_pass" className="input" value={password} onChange={(e) => setPassword(e.target.value)} />
+                            </p>
+                            <p className="login-submit">
+                                <input type="submit" name="wp-submit" id="wp-submit" className="button button-primary"
+                                    value="Log In" />
+                            </p>
+                           <Link
+                                to="/register">Register</Link> | <Link to="recover-password.html">Lost your
+                                password?</Link>
+                                { error.message ? <div className="alert alert-danger" style={{ marginTop : 7 }}>{error.message}</div> : <></>}
+                        </form>
+                        
+                    </div>
+                </div>
+            </div>
         </div>
-        {error.message ? <div style={{ width : '100%' , backgroundColor : 'red' , color : 'white' , margin : 5 , padding : 10 , borderRadius : 5 , fontWeight : 'bolder' }}>{error.message}</div> : ''}
-       
-      </form>
-</div>
+    </section>
                       :
                       window.location.href = "/"
     )

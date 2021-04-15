@@ -1,6 +1,7 @@
 import {
     Route
   } from "react-router-dom";
+import About from "../pages/About";
 import Home from "../pages/Home";
 import Login from "../pages/Login";
 
@@ -9,6 +10,10 @@ import Login from "../pages/Login";
       path: "/",
       exact: true,
       component: Home
+    },
+    {
+      path: "/about",
+      component: About
     },
     {
       path: "/login",
