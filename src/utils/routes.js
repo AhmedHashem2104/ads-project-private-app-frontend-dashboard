@@ -1,9 +1,9 @@
 import {
     Route
   } from "react-router-dom";
-import About from "../pages/About";
 import Home from "../pages/Home";
 import Login from "../pages/Login";
+import Users from "../pages/Users";
 
   export const routes = [
     {
@@ -12,8 +12,8 @@ import Login from "../pages/Login";
       component: Home
     },
     {
-      path: "/about",
-      component: About
+      path: "/users",
+      component: Users
     },
     {
       path: "/login",

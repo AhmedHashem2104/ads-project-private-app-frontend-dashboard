@@ -32,37 +32,51 @@ function Login() {
     }
     return (
         !authenticated ?
-        <section className="position-relative pb-0">
-        <div className="gen-login-page-background" style={{ backgroundImage : `url('/images/background/background.jpg')` }}></div>
-        <div className="container">
-            <div className="row">
-                <div className="col-lg-12">
-                    <div className="text-center">
-                        <form name="pms_login" id="pms_login" method="post" onSubmit={(e) => loginAPI(e)}>
-                            <h4>Sign In</h4>
-                            <p className="login-username">
-                                <label htmlFor="user_login">Email Address</label>
-                                <input type="email" name="email" id="user_login" className="input" value={email} onChange={(e) => setEmail(e.target.value)}  />
-                            </p>
-                            <p className="login-password">
-                                <label htmlFor="user_pass">Password</label>
-                                <input type="password" name="password" id="user_pass" className="input" value={password} onChange={(e) => setPassword(e.target.value)} />
-                            </p>
-                            <p className="login-submit">
-                                <input type="submit" name="wp-submit" id="wp-submit" className="button button-primary"
-                                    value="Log In" />
-                            </p>
-                           <Link
-                                to="/register">Register</Link> | <Link to="recover-password.html">Lost your
-                                password?</Link>
-                                { error.message ? <div className="alert alert-danger" style={{ marginTop : 7 }}>{error.message}</div> : <></>}
-                        </form>
-                        
-                    </div>
-                </div>
+        <div className="hold-transition login-page">
+        <div className="login-box">
+  <div className="card card-outline card-primary">
+    <div className="card-header text-center">
+      <a href="../../index2.html" className="h1"><b>Ads</b>Center</a>
+    </div>
+    <div className="card-body">
+      {/* <p className="login-box-msg">Sign in to start your session</p> */}
+
+      <form onSubmit={(e) => loginAPI(e)} method="post">
+        <div className="input-group mb-3">
+          <input type="email" className="form-control" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
+          <div className="input-group-append">
+            <div className="input-group-text">
+              <span className="fas fa-envelope"></span>
             </div>
+          </div>
         </div>
-    </section>
+        <div className="input-group mb-3">
+          <input type="password" className="form-control" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
+          <div className="input-group-append">
+            <div className="input-group-text">
+              <span className="fas fa-lock"></span>
+            </div>
+          </div>
+        </div>
+        <div className="row">
+          <div className="col-8">
+          </div>
+          <div className="col-4">
+            <button type="submit" className="btn btn-primary btn-block">Sign In</button>
+          </div>
+          <div className="col-12" style={{ marginTop : 5 }}>
+            {error.message ? <h6 className="alert alert-danger">{error.message}</h6> : <></>}
+          </div>
+        </div>
+      </form>
+
+      <p className="mb-1">
+        <a href="forgot-password.html">I forgot my password</a>
+      </p>
+    </div>
+  </div>
+</div>
+</div>
                       :
                       window.location.href = "/"
     )

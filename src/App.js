@@ -1,13 +1,15 @@
 import {BrowserRouter as Router , Switch} from 'react-router-dom'
 import { RouteWithSubRoutes , routes } from './utils/routes'
-import Header from './components/Header';
 import Context from './context/Context'
+import Navbar from './components/Navbar';
+import Aside from './components/Aside';
 function App() {
   
   return (
     <Context>
     <Router>
-      <Header />
+      <Navbar />
+      <Aside />
                 <Switch>
                     {
                       routes.map((route, i) => (

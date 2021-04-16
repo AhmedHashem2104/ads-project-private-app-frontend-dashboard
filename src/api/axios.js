@@ -12,13 +12,27 @@ const APIS = {
     login : async (userData)  => {
          return await instance.post('/login' , userData)
     },
-    latestAds : async (requestType , number)  => {
+    homePageAds : async (requestType , number)  => {
       return await instance.get(`/${requestType}/${number}` , {
         headers : {
           'Authorization' : `Bearer ${localStorage.getItem("token")}`
         }
       })
  },
+ usersAPI : async ()  => {
+  return await instance.get(`/user` , {
+    headers : {
+      'Authorization' : `Bearer ${localStorage.getItem("token")}`
+    }
+  })
+},
+deleteUser : async (id)  => {
+  return await instance.delete(`/user/${id}` , {
+    headers : {
+      'Authorization' : `Bearer ${localStorage.getItem("token")}`
+    }
+  })
+}
 }
 
 export default APIS
