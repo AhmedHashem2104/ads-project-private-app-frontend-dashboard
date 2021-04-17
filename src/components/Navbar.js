@@ -1,10 +1,10 @@
 import React, { useContext } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { ContextProvider } from '../context/Context'
 
 const Navbar = () => {
   const { authenticated } = useContext(ContextProvider)
-
+  let history = useHistory()
     return (
       authenticated
       ?

@@ -1,8 +1,11 @@
 import {
     Route
   } from "react-router-dom";
+import AddUser from "../pages/AddUser";
+import EditUser from "../pages/EditUser";
 import Home from "../pages/Home";
 import Login from "../pages/Login";
+import ShowUser from "../pages/ShowUser";
 import Users from "../pages/Users";
 
   export const routes = [
@@ -14,6 +17,18 @@ import Users from "../pages/Users";
     {
       path: "/users",
       component: Users
+    },
+    {
+      path: "/user/add",
+      component: AddUser
+    },
+    {
+      path: "/user/edit/:id",
+      component: EditUser
+    },
+    {
+      path: "/user/:id",
+      component: ShowUser
     },
     {
       path: "/login",

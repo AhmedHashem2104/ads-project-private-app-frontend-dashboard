@@ -1,12 +1,85 @@
 import React , { useState , useEffect } from 'react'
 import { Link, useHistory } from 'react-router-dom'
+import DataTable from 'react-data-table-component';
 import API from '../api/axios'
-const DataTable = () => {
+const ExpandableComponent = ({ data }) => <div style={{ display : 'flex' , alignItems : 'center' , justifyContent : 'center' }}> <img style={{ width : 200 , height : 200 , marginTop : 10 , marginBottom : 10 , borderRadius : '50%' }} src="/ab.jpg" /> </div>;
+const DataTableUsers = () => {
     const [users , setUsers] = useState([])
+    const [loading , setLoading] = useState(false)
     let history = useHistory()
+    const customStyles = {
+      rows: {
+        style: {
+         fontSize : 17
+        }
+      },
+      headCells: {
+        style: {
+          fontSize: 20,
+        },
+      },
+      cells: {
+        style: {
+          fontSize : 17
+        },
+      },
+    };
+const columns = [
+  {
+    name: 'ID',
+    selector: 'id',
+    sortable: true,
+  },
+  {
+    name: 'Username',
+    selector: 'username',
+    sortable: true,
+  },
+  {
+    name: 'Email',
+    selector: 'email',
+    sortable: true,
+  },
+  {
+    name: 'Show',
+    cell: (row) => <i style={{ fontSize : 22 , color : 'blue' , cursor : 'pointer' }}
+    className="fas fa-eye"
+    onClick={() => history.push(`/user/${row.id}`)}
+    >
+ </i>,
+    ignoreRowClick: true,
+    allowOverflow: true,
+    button: true,
+  },
+  {
+    name: 'Edit',
+    cell: (row) => <i style={{ fontSize : 22 , color : 'green' , cursor : 'pointer' }}
+    className="fas fa-edit"
+    onClick={() => history.push(`/user/edit/${row.id}`)}
+    >
+ </i>,
+    ignoreRowClick: true,
+    allowOverflow: true,
+    button: true,
+  },
+  {
+    name: 'Remove',
+    cell: (row) => <i style={{ fontSize : 22 , color : 'red' , cursor : 'pointer' }}
+    className="fas fa-trash"
+    onClick={() => deleteUSer(row.id)}
+    >
+ </i>,
+    ignoreRowClick: true,
+    allowOverflow: true,
+    button: true,
+  },
+];
     useEffect(() => {
         const usersAPI = () => {
-          API.usersAPI().then(res => setUsers(res.data)).catch(err => console.log(err.response.data))
+          API.usersAPI().then(res => {
+            setUsers(res.data)
+            setLoading(true)
+          }).catch(err => console.log(err.response.data))
         }
         usersAPI()
     } , [])
@@ -16,12 +89,13 @@ const DataTable = () => {
       }).catch(err => {})
     }
     return (
-        <div className="content-wrapper">
+      loading ?
+      <div>
         <section className="content-header">
           <div className="container-fluid">
             <div className="row mb-2">
               <div className="col-sm-6">
-                <h1>Users DataTables</h1>
+                <Link to="/user/add"><button className="btn btn-primary" style={{ fontSize : 22 }}>Add User</button></Link>
               </div>
               <div className="col-sm-6">
                 <ol className="breadcrumb float-sm-right">
@@ -35,85 +109,21 @@ const DataTable = () => {
     
         <section className="content">
           <div className="container-fluid">
-            <div className="row">
-              <div className="col-12">
-                <div className="card">
-                  <div className="card-header">
-                    <h3 className="card-title">Users Data</h3>
-                  </div>
-                  <div className="card-body">
-                    <table id="example2" className="table table-bordered table-hover">
-                      <thead>
-                      <tr>
-                        <th>Username</th>
-                        <th>Nickname</th>
-                        <th>Email</th>
-                        <th>Created At</th>
-                        <th>Show</th>
-                        <th>Edit</th>
-                        <th>Delete</th>
-                      </tr>
-                      </thead>
-                      <tbody>
-                      {
-                        users.map((value , key) => {
-                          let date = new Date(value.created_at)
-                          date = date.getDate()+
-                          "/"+(date.getMonth()+1)+
-                          "/"+date.getFullYear()+
-                          " "+date.getHours()+
-                          ":"+date.getMinutes()+
-                          ":"+date.getSeconds()
-                        return <tr key={key}>
-                          <td>{value.username}</td>
-                          <td>{value.nickname}</td>
-                          <td>{value.email}</td>
-                          <td>{date}</td>
-                          <td style={{ textAlign : 'center' }}>
-                            <i style={{ fontSize : 22 , color : 'blue' , cursor : 'pointer' }}
-                               className="fas fa-eye"
-                               onClick={() => history.push(`/user/${value.id}`)}
-                               >
-                            </i>
-                            </td>
-                          <td style={{ textAlign : 'center' }}>
-                            <i style={{ fontSize : 22 , color : 'green' , cursor : 'pointer' }}
-                               className="fas fa-edit"
-                               onClick={() => history.push(`/user/edit/${value.id}`)}
-                               >
-                            </i>
-                            </td>
-                          <td style={{ textAlign : 'center' }}>
-                            <i style={{ fontSize : 22 , color : 'red' , cursor : 'pointer' }}
-                               className="fas fa-trash"
-                               onClick={() => deleteUSer(value.id)}
-                               >
-                            </i>
-                            </td>
-                        </tr>
-                        })
-                      }
-                      </tbody>
-                      <tfoot>
-                      <tr>
-                        <th>Username</th>
-                        <th>Nickname</th>
-                        <th>Email</th>
-                        <th>Created At</th>
-                        <th>Show</th>
-                        <th>Edit</th>
-                        <th>Delete</th>
-                      </tr>
-                      </tfoot>
-                    </table>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <DataTable
+        title="Users Data"
+        columns={columns}
+        data={users}
+        pagination={true}
+        expandableRows
+        expandableRowsComponent={<ExpandableComponent />}
+        customStyles={customStyles}
+      />
           </div>
         </section>
       </div>
+      :
+      <></>
     )
 }
 
-export default DataTable
+export default DataTableUsers
