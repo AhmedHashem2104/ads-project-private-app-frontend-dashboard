@@ -1,7 +1,7 @@
 import React , { useContext , useState } from 'react'
 import { ContextProvider } from '../context/Context'
 import API from '../api/axios'
-import { Link , useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 
 function Login() {
     

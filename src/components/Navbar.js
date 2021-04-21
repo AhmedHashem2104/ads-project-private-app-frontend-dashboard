@@ -1,10 +1,9 @@
 import React, { useContext } from 'react'
-import { Link, useHistory } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { ContextProvider } from '../context/Context'
 
 const Navbar = () => {
   const { authenticated } = useContext(ContextProvider)
-  let history = useHistory()
     return (
       authenticated
       ?
@@ -32,9 +31,9 @@ const Navbar = () => {
 
     <ul className="navbar-nav ml-auto">
      <li className="nav-item">
-        <a className="nav-link" data-widget="fullscreen" href="#" role="button">
+        <div className="nav-link" data-widget="fullscreen" style={{ cursor : 'pointer' }}>
           <i className="fas fa-expand-arrows-alt"></i>
-        </a>
+        </div>
       </li>
     </ul>
   </nav>

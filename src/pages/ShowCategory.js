@@ -8,7 +8,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import { useHistory, useParams } from 'react-router';
-import APIS from '../api/axios';
+import APIS, { API_IMAGE , removeExtension } from '../api/axios';
 import { ContextProvider } from '../context/Context';
 
 const useStyles = makeStyles({
@@ -23,23 +23,27 @@ const useStyles = makeStyles({
   },
 });
 
-export default function ShowUser() {
+export default function ShowCategory() {
     const { authenticated } = useContext(ContextProvider)
-    const [user , setUser] = useState({})
+    const [category , setCategory] = useState({})
     const [loading , setLoading] = useState(false)
+    const [image , setImage] = useState('')
+    const [icon , setIcon] = useState('')
   const classes = useStyles();
   let params = useParams()
   let history = useHistory()
   useEffect(() => {
-    const userAPI = () => {
-        APIS.userAPI(params.id).then((res) => {
-            setUser(res.data)
+    const categoryAPI = () => {
+        APIS.categoryAPI(params.id).then((res) => {
+            setCategory(res.data)
+            setImage(removeExtension(res.data.image))
+            setIcon(removeExtension(res.data.icon))
             setLoading(true)
         }).catch(err => {
-            history.push('/users')
+            history.push('/categories')
         })
     }
-    userAPI()
+    categoryAPI()
 } , [params.id , history])
   return (
       authenticated ?
@@ -54,21 +58,28 @@ export default function ShowUser() {
         /> */}
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
-            Username : {user.username}
+            Name : {category.name}
           </Typography>
+          <hr />
           <Typography gutterBottom variant="h5" component="h2">
-            Nickname : {user.nickname}
+            Description : {category.description}
           </Typography>
+          <hr />
           <Typography gutterBottom variant="h5" component="h2">
-            Email : {user.email}
+            Image : <img src={`${API_IMAGE}/${image}.webp`} style={{ width : 300 }} alt="catim" />
           </Typography>
+          <hr />
+          <Typography gutterBottom variant="h5" component="h2">
+          Icon : <img src={`${API_IMAGE}/${icon}.webp`} style={{ width : 300 }} alt="catic" />
+          </Typography>
+          <hr />
         </CardContent>
       </CardActionArea>
       <CardActions>
-        <Button size="big" color="primary" variant="contained" onClick={() => history.push(`/user/add`)}>
-          Add New User
+        <Button size="large" color="primary" variant="contained" onClick={() => history.push(`/category/add`)}>
+          Add New Category
         </Button>
-        <Button size="big" color="secondary" variant="contained" onClick={() => history.goBack()}>
+        <Button size="large" color="secondary" variant="contained" onClick={() => history.goBack()}>
           Back
         </Button>
       </CardActions>

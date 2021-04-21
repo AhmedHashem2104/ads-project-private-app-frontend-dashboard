@@ -1,10 +1,10 @@
 import React , { useState , useEffect } from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import DataTable from 'react-data-table-component';
-import API from '../api/axios'
-const ExpandableComponent = ({ data }) => <div style={{ display : 'flex' , alignItems : 'center' , justifyContent : 'center' }}> <img alt="use" style={{ width : 200 , height : 200 , marginTop : 10 , marginBottom : 10 , borderRadius : '50%' }} src="/ab.jpg" /> </div>;
-const DataTableUsers = () => {
-    const [users , setUsers] = useState([])
+import API, { API_IMAGE } from '../api/axios'
+const ExpandableComponent = ({ data }) => <div style={{ display : 'flex' , alignItems : 'center' , justifyContent : 'center' }}> <img alt="cat" style={{ width : 200 , height : 200 , marginTop : 10 , marginBottom : 10 , borderRadius : '50%' }} src={`${API_IMAGE}/${data.image}`} /> </div>;
+const DataTableCategories = () => {
+    const [categories , setCategories] = useState([])
     const [loading , setLoading] = useState(false)
     let history = useHistory()
     const customStyles = {
@@ -31,20 +31,20 @@ const columns = [
     sortable: true,
   },
   {
-    name: 'Username',
-    selector: 'username',
+    name: 'Name',
+    selector: 'name',
     sortable: true,
   },
   {
-    name: 'Email',
-    selector: 'email',
+    name: 'Description',
+    selector: 'description',
     sortable: true,
   },
   {
     name: 'Show',
     cell: (row) => <i style={{ fontSize : 22 , color : 'blue' , cursor : 'pointer' }}
     className="fas fa-eye"
-    onClick={() => history.push(`/user/${row.id}`)}
+    onClick={() => history.push(`/category/${row.id}`)}
     >
  </i>,
     ignoreRowClick: true,
@@ -55,7 +55,7 @@ const columns = [
     name: 'Edit',
     cell: (row) => <i style={{ fontSize : 22 , color : 'green' , cursor : 'pointer' }}
     className="fas fa-edit"
-    onClick={() => history.push(`/user/edit/${row.id}`)}
+    onClick={() => history.push(`/category/edit/${row.id}`)}
     >
  </i>,
     ignoreRowClick: true,
@@ -66,7 +66,7 @@ const columns = [
     name: 'Remove',
     cell: (row) => <i style={{ fontSize : 22 , color : 'red' , cursor : 'pointer' }}
     className="fas fa-trash"
-    onClick={() => deleteUSer(row.id)}
+    onClick={() => deleteCategory(row.id)}
     >
  </i>,
     ignoreRowClick: true,
@@ -75,17 +75,17 @@ const columns = [
   },
 ];
     useEffect(() => {
-        const usersAPI = () => {
-          API.usersAPI().then(res => {
-            setUsers(res.data)
+        const categoriesAPI = () => {
+          API.categoriesAPI().then(res => {
+            setCategories(res.data)
             setLoading(true)
           }).catch(err => console.log(err.response.data))
         }
-        usersAPI()
+        categoriesAPI()
     } , [])
-    const deleteUSer = (id) => {
-      API.deleteUser(id).then(res => {
-        setUsers(users.filter(user => user.id !== id))
+    const deleteCategory = (id) => {
+      API.deleteCategory(id).then(res => {
+        setCategories(categories.filter(category => category.id !== id))
       }).catch(err => {})
     }
     return (
@@ -95,12 +95,12 @@ const columns = [
           <div className="container-fluid">
             <div className="row mb-2">
               <div className="col-sm-6">
-                <Link to="/user/add"><button className="btn btn-primary" style={{ fontSize : 22 }}>Add User</button></Link>
+                <Link to="/category/add"><button className="btn btn-primary" style={{ fontSize : 22 }}>Add Category</button></Link>
               </div>
               <div className="col-sm-6">
                 <ol className="breadcrumb float-sm-right">
                   <li className="breadcrumb-item"><Link to="/">Home</Link></li>
-                  <li className="breadcrumb-item active">Users</li>
+                  <li className="breadcrumb-item active">Categories</li>
                 </ol>
               </div>
             </div>
@@ -110,9 +110,9 @@ const columns = [
         <section className="content">
           <div className="container-fluid">
           <DataTable
-        title="Users Data"
+        title="categories Data"
         columns={columns}
-        data={users}
+        data={categories}
         pagination={true}
         expandableRows
         expandableRowsComponent={<ExpandableComponent />}
@@ -126,4 +126,4 @@ const columns = [
     )
 }
 
-export default DataTableUsers
+export default DataTableCategories
