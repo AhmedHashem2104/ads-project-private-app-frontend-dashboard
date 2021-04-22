@@ -2,9 +2,12 @@ import {
     Route
   } from "react-router-dom";
 import AddCategory from "../pages/AddCategory";
+import AddCountry from "../pages/AddCountry";
 import AddUser from "../pages/AddUser";
 import Categories from "../pages/Categories";
+import Countries from "../pages/Countries";
 import EditCategory from "../pages/EditCategory";
+import EditCountry from "../pages/EditCountry";
 import EditUser from "../pages/EditUser";
 import Home from "../pages/Home";
 import Login from "../pages/Login";
@@ -53,6 +56,18 @@ import Users from "../pages/Users";
     {
       path: "/login",
       component: Login
+    },
+    {
+      path: "/countries",
+      component: Countries
+    },
+    {
+      path: "/country/add",
+      component: AddCountry
+    },
+    {
+      path: "/country/edit/:id",
+      component: EditCountry
     },
   ];
 

@@ -91,6 +91,41 @@ headers : {
 }
 })
 },
+addCountry : async (data)  => {
+    return await instance.post('/country' , data , {
+    headers : {
+    'Authorization' : `Bearer ${localStorage.getItem("token")}`
+    }
+    })
+    },
+    countriesAPI : async ()  => {
+    return await instance.get(`/country` , {
+    headers : {
+    'Authorization' : `Bearer ${localStorage.getItem("token")}`
+    }
+    })
+    },
+    deleteCountry : async (id)  => {
+    return await instance.delete(`/country/${id}` , {
+    headers : {
+    'Authorization' : `Bearer ${localStorage.getItem("token")}`
+    }
+    })
+    },
+    countryAPI : async (id)  => {
+    return await instance.get(`/country/${id}` , {
+    headers : {
+    'Authorization' : `Bearer ${localStorage.getItem("token")}`
+    }
+    })
+    },
+    editCountryAPI : async (id , data)  => {
+    return await instance.put(`/country/${id}` , data , {
+    headers : {
+    'Authorization' : `Bearer ${localStorage.getItem("token")}`
+    }
+    })
+    },
 }
 
 export default APIS
